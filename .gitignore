@@ -1,0 +1,39 @@
+# .gitignore
+
+# Python files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+dist/
+*.egg
+
+# Virtual environment
+venv/
+env/
+*.venv
+
+# Flask instance folder
+instance/
+
+# Flask session files
+flask_session/
+
+# Database files
+*.sqlite
+
+# Log files
+*.log
+
+# IDE and editor files
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+*~
+*.sublime*
+*.code-workspace
+.vscode/
+.idea/
