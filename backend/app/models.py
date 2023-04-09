@@ -1,9 +1,57 @@
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from app import db
+from datetime import datetime
+
+db = SQLAlchemy()
 
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
-    name = db.Column(db.String(100))
+    username = db.Column(db.String(64), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    following = db.relationship('Follower',
+                                foreign_keys='Follower.follower_id',
+                                backref=db.backref('follower', lazy='joined'),
+                                lazy='dynamic')
+    followers = db.relationship('Follower',
+                                foreign_keys='Follower.followed_id',
+                                backref=db.backref('followed', lazy='joined'),
+                                lazy='dynamic')
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(255))
+    geolocation = db.Column(db.String(255))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=True)
+    last_edited = db.Column(db.DateTime, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    likes = db.relationship('Like', backref='post', lazy='dynamic')
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
+
+
+class Like(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    last_edited = db.Column(db.DateTime, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+
+class Follower(db.Model):
+    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    followed_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)

@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import app, db, login_manager
-from app.models import User
+from app.models import User, Post
 
 
 @login_manager.user_loader
@@ -18,7 +18,7 @@ def register():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        name = request.form.get('name')
+        username = request.form.get('username')
 
         user = User.query.filter_by(email=email).first()
 
@@ -26,7 +26,7 @@ def register():
             flash('Email address already exists')
             return redirect(url_for('register'))
 
-        new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+        new_user = User(email=email, username=username, password_hash=generate_password_hash(password, method='sha256'))
         db.session.add(new_user)
         db.session.commit()
 
@@ -46,7 +46,7 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        if not user or not check_password_hash(user.password, password):
+        if not user or not check_password_hash(user.password_hash, password):
             flash('Please check your login details and try again.')
             return redirect(url_for('login'))
 
@@ -66,7 +66,14 @@ def logout():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', name=current_user.name)
+    user = current_user
+    if user.following.count() == 0:
+        posts = Post.query.order_by(Post.last_edited.desc().nullslast(), Post.timestamp.desc()).all()
+    else:
+        followed_users_ids = [f.followed_id for f in user.following.all()]
+        posts = Post.query.filter(Post.user_id.in_(followed_users_ids)).order_by(Post.last_edited.desc().nullslast(), Post.timestamp.desc()).all()
+    return render_template('dashboard.html', posts=posts)
+
 
 
 @app.route('/')
