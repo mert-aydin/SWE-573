@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}My App{% endblock %}</title>
+
     <!-- Add the Google Fonts link for Roboto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,12 +16,53 @@
             /* Add your other styles here */
         }
 
+        /* Dashboard container and cards centering */
         .dashboard-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .stories {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh; /* Make sure the body takes up the full viewport height */
-            margin: 0;
+            width: 100%;
+        }
+
+        /* Post card styles */
+        .post-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .post-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-card .card-dates {
+            display: flex;
+            align-items: center;
+        }
+
+        .post-card .card-dates span {
+            margin-left: 5px;
+        }
+
+        .post-card h3 {
+            margin-top: 0;
+            margin-bottom: -10px; /* Reduce the margin-bottom to make title and poster name closer */
+        }
+
+        .post-card p {
+            margin-bottom: 8px;
         }
     </style>
 </head>

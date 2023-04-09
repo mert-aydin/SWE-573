@@ -1,8 +1,8 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import app, db, login_manager
-from app.models import User, Post
+from app.models import User, Post, Like
 
 
 @login_manager.user_loader
@@ -71,9 +71,31 @@ def dashboard():
         posts = Post.query.order_by(Post.last_edited.desc().nullslast(), Post.timestamp.desc()).all()
     else:
         followed_users_ids = [f.followed_id for f in user.following.all()]
-        posts = Post.query.filter(Post.user_id.in_(followed_users_ids)).order_by(Post.last_edited.desc().nullslast(), Post.timestamp.desc()).all()
+        posts = Post.query.filter(Post.user_id.in_(followed_users_ids)).order_by(Post.last_edited.desc().nullslast(),
+                                                                                 Post.timestamp.desc()).all()
+
     return render_template('dashboard.html', posts=posts)
 
+
+@app.route('/like_post/<int:post_id>', methods=['POST'])
+@login_required
+def like_post(post_id):
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify(success=False, message="Post not found"), 404
+
+    like = Like(user_id=current_user.id, post_id=post.id)
+
+    is_liked = db.session.query(Like).filter((Like.user_id == like.user_id) & (Like.post_id == post.id)).first()
+
+    if is_liked:
+        db.session.delete(is_liked)
+    else:
+        db.session.add(like)
+
+    db.session.commit()
+
+    return jsonify(success=True, message="Post liked", likes=post.likes.count())
 
 
 @app.route('/')
