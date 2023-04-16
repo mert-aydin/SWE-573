@@ -78,10 +78,11 @@ def dashboard():
     return render_template('dashboard.html', posts=posts)
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET'])
+@app.route('/profile/<int:user_id>', methods=['GET'])
 @login_required
-def profile():
-    return render_template('profile.html', user=current_user)
+def profile(user_id=None):
+    return render_template('profile.html', user=User.query.filter_by(id=user_id).first() if user_id else current_user)
 
 
 @app.route('/like_post/<int:post_id>', methods=['POST'])

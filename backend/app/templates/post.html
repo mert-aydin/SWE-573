@@ -12,7 +12,8 @@
                     {% endif %}
                 </div>
             </div>
-            <p><i>Posted by: {{ post.author.username }}</i></p>
+            <p><i>Posted by: <a href="{{ url_for('profile', user_id=post.user_id) }}">{{ post.author.username }}</a></i>
+            </p>
             <p>{{ post.body }}</p>
             <button class="like-button">Like</button>
             <span class="like-count">{{ post.likes.count() }}</span>
