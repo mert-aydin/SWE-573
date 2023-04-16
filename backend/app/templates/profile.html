@@ -23,11 +23,23 @@
     {% else %}
     <p>Posted {{ user.posts.count() }} stories.</p>
     {% endif %}
-</main>
-{% endblock %}
+    {% endblock %}
 
-{% block content %}
-{% with posts = user.posts %}
-{% include "post.html" %}
-{% endwith %}
-{% endblock %}
+    {% block content %}
+    {% if current_user != user %}
+    {% if current_user.is_following(user) %}
+    <form method="post" action="{{ url_for('unfollow', user_id=user.id) }}" class="follow-form">
+        <button class="btn btn-primary btn-sm">Unfollow</button>
+    </form>
+    {% else %}
+    <form method="post" action="{{ url_for('follow', user_id=user.id) }}" class="follow-form">
+        <button class="btn btn-outline-primary btn-sm">Follow</button>
+    </form>
+    {% endif %}
+    {% endif %}
+
+    {% with posts = user.posts %}
+    {% include "post.html" %}
+    {% endwith %}
+    {% endblock %}
+</main>

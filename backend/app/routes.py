@@ -18,7 +18,7 @@ def register():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        username = request.form.get('username')
+        user_id = request.form.get('user_id')
 
         user = User.query.filter_by(email=email).first()
 
@@ -26,7 +26,7 @@ def register():
             flash('Email address already exists')
             return redirect(url_for('register'))
 
-        new_user = User(email=email, username=username, password_hash=generate_password_hash(password, method='sha256'))
+        new_user = User(email=email, user_id=user_id, password_hash=generate_password_hash(password, method='sha256'))
         db.session.add(new_user)
         db.session.commit()
 
@@ -85,8 +85,42 @@ def profile(user_id=None):
     return render_template('profile.html', user=User.query.filter_by(id=user_id).first() if user_id else current_user)
 
 
-@app.route('/like_post/<int:post_id>', methods=['POST'])
+@app.route('/follow/<user_id>', methods=['POST'])
 @login_required
+def follow(user_id):
+    user_to_follow = User.query.filter_by(id=user_id).first()
+    if user_to_follow is None:
+        flash('User {} not found.'.format(user_id))
+        return redirect(url_for('dashboard'))
+
+    if current_user.is_following(user_to_follow):
+        flash('You are already following {}.'.format(user_id))
+        return redirect(url_for('profile', id=user_id))
+
+    current_user.follow(user_to_follow)
+    db.session.commit()
+    flash('You are now following {}!'.format(user_id))
+    return redirect(url_for('profile', user_id=user_id))
+
+
+@app.route('/unfollow/<user_id>', methods=['POST'])
+@login_required
+def unfollow(user_id):
+    user_to_unfollow = User.query.filter_by(id=user_id).first()
+    if user_to_unfollow is None:
+        flash('User {} not found.'.format(user_id))
+        return redirect(url_for('dashboard'))
+
+    if not current_user.is_following(user_to_unfollow):
+        flash('You are not following {}.'.format(user_id))
+        return redirect(url_for('profile', id=user_id))
+
+    current_user.unfollow(user_to_unfollow)
+    db.session.commit()
+    flash('You are no longer following {}.'.format(user_id))
+    return redirect(url_for('profile', user_id=user_id))
+
+
 def like_post(post_id):
     post = Post.query.get(post_id)
     if not post:

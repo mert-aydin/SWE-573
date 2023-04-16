@@ -20,6 +20,19 @@ class User(UserMixin, db.Model):
                                 backref=db.backref('followed', lazy='joined'),
                                 lazy='dynamic')
 
+    def follow(self, user):
+        if not self.is_following(user):
+            follow = Follower(follower_id=self.id, followed_id=user.id)
+            db.session.add(follow)
+
+    def unfollow(self, user):
+        follow = self.following.filter_by(followed_id=user.id).first()
+        if follow:
+            db.session.delete(follow)
+
+    def is_following(self, user):
+        return self.following.filter_by(follower_id=self.id, followed_id=user.id).first()
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
