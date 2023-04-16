@@ -13,10 +13,16 @@
 {% include "toolbar.html" %}
 
 <main>
-    <h1>My Profile</h1>
+    <h1>{{ user.username }}'s Profile</h1>
     <p>Username: {{ user.username }}</p>
     <p>Email: {{ user.email }}</p>
-    <p>You have {{ user.posts.count() }} post(s).</p>
+    {% if user.posts.count() == 0 %}
+    <p>Not posted any stories yet.</p>
+    {% elif user.posts.count() == 1 %}
+    <p>Posted 1 story.</p>
+    {% else %}
+    <p>Posted {{ user.posts.count() }} stories.</p>
+    {% endif %}
 </main>
 {% endblock %}
 
