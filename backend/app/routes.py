@@ -71,6 +71,7 @@ def dashboard():
         posts = Post.query.order_by(Post.last_edited.desc().nullslast(), Post.timestamp.desc()).all()
     else:
         followed_users_ids = [f.followed_id for f in user.following.all()]
+        followed_users_ids.append(current_user.id)
         posts = Post.query.filter(Post.user_id.in_(followed_users_ids)).order_by(Post.last_edited.desc().nullslast(),
                                                                                  Post.timestamp.desc()).all()
 
