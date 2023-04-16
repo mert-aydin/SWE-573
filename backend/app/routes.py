@@ -121,6 +121,8 @@ def unfollow(user_id):
     return redirect(url_for('profile', user_id=user_id))
 
 
+@app.route('/like_post/<int:post_id>', methods=['POST'])
+@login_required
 def like_post(post_id):
     post = Post.query.get(post_id)
     if not post:
