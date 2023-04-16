@@ -1,0 +1,17 @@
+<div class="sticky-toolbar">
+    <div class="my-profile-container float-right">
+        <form action="{{ url_for('profile') }}" method="get">
+            <button type="submit">My Profile</button>
+        </form>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" style="text-decoration: none">
+        <h1 style="color: #2196f3"><i>Storyverse</i></h1>
+    </a>
+
+    <div class="logout-container">
+        <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</div>

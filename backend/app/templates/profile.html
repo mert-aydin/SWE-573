@@ -1,16 +1,27 @@
 {% extends "base.html" %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<style>
+    main {
+        margin: 1rem;
+    }
+
+</style>
 {% endblock %}
 
 {% block sticky_toolbar %}
 {% include "toolbar.html" %}
+
+<main>
+    <h1>My Profile</h1>
+    <p>Username: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>You have {{ user.posts.count() }} post(s).</p>
+</main>
 {% endblock %}
 
 {% block content %}
-
-{% with posts = posts %}
+{% with posts = user.posts %}
 {% include "post.html" %}
 {% endwith %}
-
 {% endblock %}

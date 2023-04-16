@@ -56,7 +56,7 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 @login_required
 def logout():
     logout_user()
@@ -76,6 +76,12 @@ def dashboard():
                                                                                  Post.timestamp.desc()).all()
 
     return render_template('dashboard.html', posts=posts)
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html', user=current_user)
 
 
 @app.route('/like_post/<int:post_id>', methods=['POST'])

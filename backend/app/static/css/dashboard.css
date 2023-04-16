@@ -1,0 +1,97 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.sticky-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 5px 20px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.my-profile-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.my-profile-container button {
+    background-color: #2196f3;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.logout-container button {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.dashboard-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.stories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.post-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    max-width: 800px;
+    width: 100%;
+}
+
+.post-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-card .card-dates {
+    display: flex;
+    align-items: center;
+}
+
+.post-card .card-dates span {
+    margin-left: 5px;
+}
+
+.post-card h3 {
+    margin-top: 0;
+    margin-bottom: -10px;
+}
+
+.post-card p {
+    margin-bottom: 8px;
+}

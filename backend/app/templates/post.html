@@ -1,0 +1,53 @@
+<div class="dashboard-container">
+    <div class="stories">
+        {% for post in posts %}
+        <div class="post-card" data-post-id="{{ post.id }}">
+            <div class="card-header">
+                <h3>{{ post.title }}</h3>
+                <div class="card-dates">
+                    <span>{{ post.timestamp|relative_time }}</span>
+                    {% if post.last_edited %}
+                    <span>-</span>
+                    <span>Last edited: {{ post.last_edited|relative_time }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <p><i>Posted by: {{ post.author.username }}</i></p>
+            <p>{{ post.body }}</p>
+            <button class="like-button">Like</button>
+            <span class="like-count">{{ post.likes.count() }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.like-button').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            // Get the post card element and retrieve the post ID from it
+            const postCard = event.target.closest('.post-card');
+            const postId = postCard.dataset.postId;
+
+            try {
+                const response = await fetch(`/like_post/${postId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update the like count label with the new like count
+                    const likeCountLabel = postCard.querySelector('.like-count');
+                    likeCountLabel.innerText = data.likes;
+                } else {
+                    alert('Error liking the post: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error liking the post.');
+            }
+        });
+    });
+</script>
