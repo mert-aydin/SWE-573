@@ -67,12 +67,16 @@ def logout():
 @login_required
 def dashboard():
     user = current_user
-    if user.following.count() == 0:
-        posts = Post.query.order_by(Post.last_edited.desc().nullslast(), Post.timestamp.desc()).all()
-    else:
-        followed_users_ids = [f.followed_id for f in user.following.all()]
-        followed_users_ids.append(current_user.id)
-        posts = Post.query.filter(Post.user_id.in_(followed_users_ids)).order_by(Post.last_edited.desc().nullslast(),
+
+    followed_users_ids = [f.followed_id for f in user.following.all()]
+    followed_users_ids.append(current_user.id)
+
+    # posts by followed users and me, sorted by last edit date or post date desc.
+    posts = Post.query.filter(Post.user_id.in_(followed_users_ids)).order_by(Post.last_edited.desc().nullslast(),
+                                                                             Post.timestamp.desc()).all()
+
+    # posts by not followed users, sorted by last edit date or post date desc.
+    posts += Post.query.filter(Post.user_id.notin_(followed_users_ids)).order_by(Post.last_edited.desc().nullslast(),
                                                                                  Post.timestamp.desc()).all()
 
     return render_template('dashboard.html', posts=posts)
