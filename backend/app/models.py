@@ -1,3 +1,4 @@
+import base64
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime
@@ -56,6 +57,10 @@ class Post(db.Model):
     def get_locations(self):
         if self.geolocation:
             return self.geolocation.split(';')
+
+    def get_image(self):
+        if self.image_url:
+            return "data:image/png;base64," + self.image_url
 
 
 class Like(db.Model):

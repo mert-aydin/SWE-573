@@ -4,7 +4,9 @@ from app.models import User, Post, Like
 from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from werkzeug.utils import secure_filename
+import os
+import base64
 from .forms import CreatePostForm
 
 
@@ -90,8 +92,18 @@ def dashboard():
 def create_post():
     form = CreatePostForm()
     if form.validate_on_submit():
+        image = request.files[form.image_url.name]
+        filename = secure_filename(image.filename)
+        file_ext = os.path.splitext(filename)[1].lower()
+
+        if file_ext not in ['.jpg', '.jpeg', '.png', '.gif']:
+            return 'Invalid file extension', 400
+
+        base64_encoded_image = base64.b64encode(image.read()).decode('utf-8')
+
         post = Post(title=form.title.data, body=form.body.data, tags=form.tags.data, start_date=form.start_date.data,
-                    end_date=form.end_date.data, user_id=current_user.id, geolocation=form.geolocation.data)
+                    end_date=form.end_date.data, user_id=current_user.id, geolocation=form.geolocation.data,
+                    image_url=base64_encoded_image)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')

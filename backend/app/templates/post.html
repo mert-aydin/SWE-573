@@ -14,11 +14,14 @@
             </div>
             <div class="card-header">
                 <p><i>Posted by: <a href="{{ url_for('profile', user_id=post.user_id) }}">{{ post.author.username }}</a></i>
+                    {% if post.get_locations() %}
                 <p>{% for location in post.get_locations() %}<a href="">{{ location }}</a>{% if not loop.last %}, {%
                     endif %}{%
                     endfor %}</p>
+                {% endif %}
             </div>
             </p>
+            <img src="{{ post.get_image() }}" height="500em">
             <p>{{ post.body }}</p>
             {% if post.get_tags() %}
             <p>{% for tag in post.get_tags() %}<a href="">#{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
