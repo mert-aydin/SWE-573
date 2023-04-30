@@ -10,9 +10,8 @@
 {% endblock %}
 
 {% block content %}
+<h1 class="dashboard-container">Create a Post</h1>
 <div class="dashboard-container">
-    <h1>Create a Post</h1>
-    <br>
     <form id="create-post-form" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title</label>
@@ -27,15 +26,6 @@
             <input type="text" class="form-control" id="tags" name="tags">
         </div>
         <div class="form-group">
-            <label for="image">Image</label>
-            <input type="file" class="form-control-file" id="image" name="image">
-        </div>
-        <div class="form-group">
-            <label for="geolocation">Geolocation</label>
-            <div id="map"></div>
-            <input type="hidden" id="geolocation" name="geolocation" required>
-        </div>
-        <div class="form-group">
             <label for="start-date">Start Date</label>
             <input type="date" class="form-control" id="start-date" name="start_date" required>
         </div>
@@ -43,14 +33,17 @@
             <label for="end-date">End Date</label>
             <input type="date" class="form-control" id="end-date" name="end_date">
         </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" class="form-control-file" id="image" name="image">
+        </div>
+        <div class="form-group">
+            <label for="geolocation">Geolocation</label>
+            {% include "map.html" %}
+            <input type="hidden" id="geolocation" name="geolocation" required>
+        </div>
         {{ form.csrf_token }}
         <button type="submit" class="button btn-primary">Submit</button>
     </form>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap" async
-        defer></script>
-<script src="{{ url_for('static', filename='js/post.js') }}"></script>
 {% endblock %}

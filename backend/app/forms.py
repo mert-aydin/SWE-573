@@ -10,5 +10,5 @@ class CreatePostForm(FlaskForm):
     start_date = StringField('Start Date')
     end_date = StringField('End Date')
     geolocation = StringField('Geolocation')
-    # image_url = StringField('Image URL')
+    image_url = StringField('Image URL')
     submit = SubmitField('Submit')
