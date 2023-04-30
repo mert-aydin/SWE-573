@@ -38,6 +38,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     body = db.Column(db.Text, nullable=False)
+    tags = db.Column(db.String(200))
     image_url = db.Column(db.String(255))
     geolocation = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
@@ -47,6 +48,10 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     likes = db.relationship('Like', backref='post', lazy='dynamic')
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
+
+    def get_tags(self):
+        if self.tags:
+            return self.tags.split(';')
 
 
 class Like(db.Model):

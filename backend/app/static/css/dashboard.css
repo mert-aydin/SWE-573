@@ -19,8 +19,8 @@ body {
 }
 
 .my-profile-container {
-  display: flex;
-  justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
 }
 
 
@@ -94,4 +94,28 @@ body {
 
 .post-card p {
     margin-bottom: 8px;
+}
+
+.float-btn {
+    position: fixed;
+    bottom: 2em;
+    right: 2em;
+    z-index: 1000;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #ff5555;
+    color: #fff;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    font-size: 2em;
+    line-height: 2em;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: scale(1.25);
 }
