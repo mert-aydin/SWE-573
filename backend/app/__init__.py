@@ -5,8 +5,11 @@ from flask_migrate import Migrate
 import humanize
 from datetime import datetime
 from .models import db, User, Post, Like, Comment, Follower
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
+csrf = CSRFProtect(app)
+csrf.init_app(app)
 app.config['SECRET_KEY'] = os.environ.get('FLASK_APP_SECRET_KEY')
 app.config[
     'SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{os.environ.get("POSTGRESQL_DB_PASSWORD")}@localhost/storyverse'

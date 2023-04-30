@@ -51,7 +51,7 @@ class Post(db.Model):
 
     def get_tags(self):
         if self.tags:
-            return self.tags.split(';')
+            return self.tags.split(',')
 
 
 class Like(db.Model):

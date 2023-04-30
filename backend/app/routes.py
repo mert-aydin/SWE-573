@@ -3,6 +3,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import app, db, login_manager
 from app.models import User, Post, Like
+from .forms import CreatePostForm
+from flask_wtf.csrf import CSRFProtect
 
 
 @login_manager.user_loader
@@ -80,6 +82,20 @@ def dashboard():
                                                                                  Post.timestamp.desc()).all()
 
     return render_template('dashboard.html', posts=posts)
+
+
+@app.route('/create_post', methods=['GET', 'POST'])
+@login_required
+def create_post():
+    form = CreatePostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, body=form.body.data, tags=form.tags.data, start_date=form.start_date.data,
+                    end_date=form.end_date.data, user_id=current_user.id, geolocation=form.geolocation.data)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('dashboard'))
+    return render_template('create_post.html', form=form)
 
 
 @app.route('/profile', methods=['GET'])
