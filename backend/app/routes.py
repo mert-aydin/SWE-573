@@ -1,10 +1,11 @@
+import werkzeug.exceptions
+from app import app, db, login_manager
+from app.models import User, Post, Like
 from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import app, db, login_manager
-from app.models import User, Post, Like
+
 from .forms import CreatePostForm
-from flask_wtf.csrf import CSRFProtect
 
 
 @login_manager.user_loader
@@ -160,6 +161,11 @@ def like_post(post_id):
     db.session.commit()
 
     return jsonify(success=True, message="Post liked", likes=post.likes.count())
+
+
+@app.errorhandler(werkzeug.exceptions.Unauthorized)
+def restricted(exception):
+    return redirect(url_for('login'))
 
 
 @app.route('/')

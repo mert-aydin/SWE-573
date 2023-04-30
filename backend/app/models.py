@@ -51,7 +51,11 @@ class Post(db.Model):
 
     def get_tags(self):
         if self.tags:
-            return self.tags.split(',')
+            return self.tags.split(';')
+
+    def get_locations(self):
+        if self.geolocation:
+            return self.geolocation.split(';')
 
 
 class Like(db.Model):

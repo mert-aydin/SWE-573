@@ -12,11 +12,18 @@
                     {% endif %}
                 </div>
             </div>
-            <p><i>Posted by: <a href="{{ url_for('profile', user_id=post.user_id) }}">{{ post.author.username }}</a></i>
+            <div class="card-header">
+                <p><i>Posted by: <a href="{{ url_for('profile', user_id=post.user_id) }}">{{ post.author.username }}</a></i>
+                <p>{% for location in post.get_locations() %}<a href="">{{ location }}</a>{% if not loop.last %}, {%
+                    endif %}{%
+                    endfor %}</p>
+            </div>
             </p>
             <p>{{ post.body }}</p>
-            <p>Tags: {% for tag in post.get_tags() %}<a href="">#{{ tag }}</a>{% if not loop.last %}, {% endif %}{%
-                endfor %}</p>
+            {% if post.get_tags() %}
+            <p>{% for tag in post.get_tags() %}<a href="">#{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+            </p>
+            {% endif %}
             <button class="like-button">Like</button>
             <span class="like-count">{{ post.likes.count() }}</span>
         </div>
