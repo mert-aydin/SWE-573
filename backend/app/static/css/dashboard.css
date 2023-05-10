@@ -119,3 +119,9 @@ body {
 .btn-circular:hover {
     transform: scale(1.25);
 }
+
+.radio-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
