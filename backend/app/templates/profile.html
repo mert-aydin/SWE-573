@@ -14,8 +14,9 @@
 
 <main>
     <h1>{{ user.username }}'s Profile</h1>
-    <p>Username: {{ user.username }}</p>
+    {% if current_user == user %}
     <p>Email: {{ user.email }}</p>
+    {% endif %}
     {% if user.posts.count() == 0 %}
     <p>Not posted any stories yet.</p>
     {% elif user.posts.count() == 1 %}
