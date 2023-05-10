@@ -93,13 +93,16 @@ def create_post():
     form = CreatePostForm()
     if form.validate_on_submit():
         image = request.files[form.image_url.name]
-        filename = secure_filename(image.filename)
-        file_ext = os.path.splitext(filename)[1].lower()
+        base64_encoded_image = None
 
-        if file_ext not in ['.jpg', '.jpeg', '.png', '.gif']:
-            return 'Invalid file extension', 400
+        if image:
+            filename = secure_filename(image.filename)
+            file_ext = os.path.splitext(filename)[1].lower()
 
-        base64_encoded_image = base64.b64encode(image.read()).decode('utf-8')
+            if file_ext not in ['.jpg', '.jpeg', '.png', '.gif']:
+                return 'Invalid file extension', 400
+
+            base64_encoded_image = base64.b64encode(image.read()).decode('utf-8')
 
         post = Post(title=form.title.data, body=form.body.data, tags=form.tags.data, start_date=form.start_date.data,
                     end_date=form.end_date.data, user_id=current_user.id, geolocation=form.geolocation.data,
