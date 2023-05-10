@@ -21,7 +21,9 @@
                 {% endif %}
             </div>
             </p>
+            {% if post.get_image() %}
             <img src="{{ post.get_image() }}" height="500em">
+            {% endif %}
             <p>{{ post.body }}</p>
             {% if post.get_tags() %}
             <p>{% for tag in post.get_tags() %}<a href="">#{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
