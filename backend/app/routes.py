@@ -104,6 +104,12 @@ def create_post():
 
             base64_encoded_image = base64.b64encode(image.read()).decode('utf-8')
 
+        if form.start_date.data == "":
+            form.start_date.data = None
+
+        if form.end_date.data == "":
+            form.end_date.data = None
+
         post = Post(title=form.title.data, body=form.body.data, tags=form.tags.data, start_date=form.start_date.data,
                     end_date=form.end_date.data, user_id=current_user.id, geolocation=form.geolocation.data,
                     image_url=base64_encoded_image)
