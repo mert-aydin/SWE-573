@@ -20,8 +20,12 @@ from app import routes, models
 
 @app.template_filter('relative_time')
 def relative_time_filter(value):
-    now = datetime.utcnow()
-    return humanize.naturaltime(now - value)
+    return humanize.naturaltime(value)
+
+
+@app.template_filter('humanized_time')
+def humanized_time_filter(value):
+    return humanize.naturaldate(value)
 
 
 if __name__ == '__main__':

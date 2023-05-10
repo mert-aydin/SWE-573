@@ -5,15 +5,16 @@
             <div class="card-header">
                 <h3>{{ post.title }}</h3>
                 <div class="card-dates">
-                    <span>{{ post.timestamp|relative_time }}</span>
-                    {% if post.last_edited %}
+                    <span>{{ post.start_date|humanized_time }}</span>
+                    {% if post.end_date %}
                     <span>-</span>
-                    <span>Last edited: {{ post.last_edited|relative_time }}</span>
+                    <span>{{ post.end_date|humanized_time }}</span>
                     {% endif %}
                 </div>
             </div>
             <div class="card-header">
-                <p><i>Posted by: <a href="{{ url_for('profile', user_id=post.user_id) }}">{{ post.author.username }}</a></i>
+                <p><i><a href="{{ url_for('profile', user_id=post.user_id) }}">{{ post.author.username }}</a> · {{
+                    post.timestamp|relative_time }}</i>
                     {% if post.get_locations() %}
                 <p>{% for location in post.get_locations() %}<a href="">{{ location }}</a>{% if not loop.last %}, {%
                     endif %}{%
@@ -29,7 +30,8 @@
             <p>{% for tag in post.get_tags() %}<a href="">#{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
             </p>
             {% endif %}
-            <button class="like-button">Like</button>
+            <button class="like-button" style="width: 5em">{% if post.is_liked() %}Unlike{% else %}Like{% endif %}
+            </button>
             <span class="like-count">{{ post.likes.count() }}</span>
         </div>
         {% endfor %}
@@ -56,6 +58,11 @@
                     // Update the like count label with the new like count
                     const likeCountLabel = postCard.querySelector('.like-count');
                     likeCountLabel.innerText = data.likes;
+                    if (button.innerHTML === "Like") {
+                        button.innerHTML = "Unlike"
+                    } else {
+                        button.innerHTML = "Like"
+                    }
                 } else {
                     alert('Error liking the post: ' + data.message);
                 }

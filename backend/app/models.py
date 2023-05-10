@@ -1,7 +1,8 @@
-import base64
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
 from datetime import datetime
+
+from flask_login import UserMixin
+from flask_login import current_user
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -61,6 +62,9 @@ class Post(db.Model):
     def get_image(self):
         if self.image_url:
             return "data:image/png;base64," + self.image_url
+
+    def is_liked(self):
+        return self.likes.filter_by(user_id=current_user.id).first()
 
 
 class Like(db.Model):
