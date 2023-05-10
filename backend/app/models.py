@@ -3,6 +3,7 @@ from datetime import datetime
 from flask_login import UserMixin
 from flask_login import current_user
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 
 db = SQLAlchemy()
 
@@ -12,7 +13,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    posts = db.relationship('Post', backref='author', lazy='dynamic', order_by=desc('timestamp'))
     following = db.relationship('Follower',
                                 foreign_keys='Follower.follower_id',
                                 backref=db.backref('follower', lazy='joined'),
