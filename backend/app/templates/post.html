@@ -58,10 +58,10 @@
                     // Update the like count label with the new like count
                     const likeCountLabel = postCard.querySelector('.like-count');
                     likeCountLabel.innerText = data.likes;
-                    if (button.innerHTML === "Like") {
-                        button.innerHTML = "Unlike"
+                    if (button.innerText === "Like") {
+                        button.innerText = "Unlike"
                     } else {
-                        button.innerHTML = "Like"
+                        button.innerText = "Like"
                     }
                 } else {
                     alert('Error liking the post: ' + data.message);
