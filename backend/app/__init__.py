@@ -7,9 +7,8 @@ from datetime import datetime
 from .models import db, User, Post, Like, Comment, Follower
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('FLASK_APP_SECRET_KEY')
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = f'postgresql://postgres:{os.environ.get("POSTGRESQL_DB_PASSWORD")}@localhost/storyverse'
+app.config['SECRET_KEY'] = "****"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:******@34.118.102.214/storyverse'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 migrate = Migrate(app, db)
