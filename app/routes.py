@@ -1,13 +1,13 @@
+import base64
+import os
 import werkzeug.exceptions
-from app import app, db, login_manager
-from app.models import User, Post, Like
 from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-import os
-import base64
+from app import app, login_manager
 from .forms import CreatePostForm
+from .models import db, User, Post, Like
 
 
 @login_manager.user_loader
