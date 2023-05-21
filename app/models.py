@@ -41,6 +41,7 @@ class Post(db.Model):
     tags = db.Column(db.String(200))
     image_url = db.Column(db.String())
     geolocation = db.Column(db.String(255))
+    lat_lon = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     start_date = db.Column(db.Date, nullable=True)
     end_date = db.Column(db.Date, nullable=True)

@@ -26,6 +26,11 @@
             <img src="{{ post.get_image() }}" height="500em">
             {% endif %}
             <p>{{ post.body }}</p>
+            <div>
+                {% with coordinates = post.lat_lon, id = post.id %}
+                {% include "location_presenter.html" %}
+                {% endwith %}
+            </div>
             {% if post.get_tags() %}
             <p>{% for tag in post.get_tags() %}<a href="">#{{ tag }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
             </p>

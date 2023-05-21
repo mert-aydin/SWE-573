@@ -12,5 +12,6 @@ class CreatePostForm(FlaskForm):
     end_date = StringField('End Date', default=None)
     end_date_free = StringField('End Date Free')
     geolocation = StringField('Geolocation', validators=[DataRequired()])
+    lat_lon = StringField('lat_lon', validators=[DataRequired()])
     image_url = FileField('Image')
     submit = SubmitField('Submit')

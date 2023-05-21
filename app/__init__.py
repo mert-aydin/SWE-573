@@ -6,9 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '****'
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:******@/storyverse?host=/cloudsql/storyverse-385315:europe-central2:storyverse-2'  # app engine to cloud sql
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:******@34.118.67.200/storyverse' # local to cloud sql
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:******@/storyverse?host=/cloudsql/storyverse-385315:europe-central2:storyverse-2'  # app engine to cloud sql
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:******@34.118.67.200/storyverse' # local to cloud sql
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:******@localhost/storyverse' # local to local sql
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

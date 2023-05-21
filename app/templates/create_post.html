@@ -173,8 +173,12 @@
         </div>
         <div class="form-group">
             <label for="geolocation">Geolocation</label>
-            {% include "map.html" %}
+            {% include "location_picker.html" %}
             <input type="hidden" id="geolocation" name="geolocation" required>
+        </div>
+        <div class="form-group">
+            <label for="lat_lon"></label>
+            <input type="hidden" id="lat_lon" name="lat_lon" required>
         </div>
         {{ form.csrf_token }}
         <button type="submit" class="button btn-primary">Submit</button>

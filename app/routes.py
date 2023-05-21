@@ -112,6 +112,7 @@ def create_post():
 
         post = Post(title=form.title.data, body=form.body.data, tags=form.tags.data, start_date=form.start_date.data,
                     end_date=form.end_date.data, user_id=current_user.id, geolocation=form.geolocation.data,
+                    lat_lon=form.lat_lon.data,
                     image_url=base64_encoded_image)
         db.session.add(post)
         db.session.commit()

@@ -21,6 +21,9 @@
 <div id="cities">
     <ul id="city-list"></ul>
 </div>
+<div id="lat-lon" style="display: none">
+    <ul id="lat-lon-list"></ul>
+</div>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
     // Initialize the map
@@ -62,10 +65,15 @@
         console.log(data.address)
 
         // Add the city name to the list below the map
+        const cityListItem = document.createElement('li');
+        cityListItem.textContent = city;
         const cityList = document.getElementById('city-list');
-        const listItem = document.createElement('li');
-        listItem.textContent = city;
-        cityList.appendChild(listItem);
+        cityList.appendChild(cityListItem);
+
+        const latLonListItem = document.createElement('li');
+        latLonListItem.textContent = data.lat + "," + data.lon
+        const latLonList = document.getElementById('lat-lon-list');
+        latLonList.appendChild(latLonListItem)
 
         // Update the input value
         updateGeolocationInput();
@@ -73,7 +81,8 @@
         // Add a click event listener to the marker for removing it and the city from the list
         marker.on('click', () => {
             map.removeLayer(marker);
-            listItem.remove();
+            cityListItem.remove();
+            latLonListItem.remove();
             // Update the input value
             updateGeolocationInput();
         });
@@ -85,6 +94,11 @@
         const geolocationInput = document.getElementById('geolocation');
         const cities = Array.from(cityList.children).map(item => item.textContent);
         geolocationInput.value = cities.join(';');
+
+        const latLonList = document.getElementById('lat-lon-list');
+        const latLonInput = document.getElementById('lat_lon');
+        const latLons = Array.from(latLonList.children).map(item => item.textContent);
+        latLonInput.value = latLons.join(';');
     }
 </script>
 </body>

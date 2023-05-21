@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <style>
+        .location_presenter {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="location_presenter" id="{{ id }}"></div>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
+<script>
+    var coordinatesList = "{{ coordinates }}".split(';').map(function (array) {
+        return JSON.parse('[' + array + ']');
+    });
+
+    var map = L.map('{{ id }}').setView(coordinatesList[0], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+    }).addTo(map);
+
+    var markers = L.featureGroup().addTo(map);
+
+    for (var i = 0; i < coordinatesList.length; i++) {
+        L.marker(coordinatesList[i]).addTo(markers);
+    }
+
+    map.fitBounds(markers.getBounds());
+</script>
+</body>
+</html>
