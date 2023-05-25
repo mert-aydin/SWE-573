@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 from app import app, login_manager
 from .forms import CreatePostForm
 from .models import db, User, Post, Like
+from .utils.date_utils import season_to_start_date, season_to_end_date, decade_to_start_date, decade_to_end_date
 
 
 @login_manager.user_loader
@@ -109,6 +110,18 @@ def create_post():
 
         if form.end_date.data == "":
             form.end_date.data = None
+
+        if form.start_date_free.data:
+            if len(form.start_date_free.data) > 5:
+                form.start_date.data = season_to_start_date(form.start_date_free.data)
+            else:
+                form.start_date.data = decade_to_start_date(form.start_date_free.data)
+
+        if form.end_date_free.data:
+            if len(form.end_date_free.data) > 5:
+                form.end_date.data = season_to_end_date(form.end_date_free.data)
+            else:
+                form.end_date.data = decade_to_end_date(form.end_date_free.data)
 
         post = Post(title=form.title.data, body=form.body.data, tags=form.tags.data.replace(" ", ";"),
                     start_date=form.start_date.data,

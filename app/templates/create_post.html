@@ -80,7 +80,7 @@
                     document.getElementById("start-date").style.display = 'none'
                     document.getElementById("start-date").required = false
                     document.getElementById("end-date").style.display = 'none'
-                    document.getElementById("end-date").srequired = false
+                    document.getElementById("end-date").required = false
                     document.getElementById("start-season").style.display = 'none'
                     document.getElementById("start-season").required = false
                     document.getElementById("end-season").style.display = 'none'
@@ -100,19 +100,18 @@
                 <option value="">Select Season</option>
             </select>
             <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    for (let year = new Date().getFullYear(); year >= 1970; year--) {
-                        let option;
-                        for (let season = 0; season < 4; season++) {
-                            option = document.createElement("option");
-                            option.value = season;
-                            option.textContent = ["Spring", "Summer", "Autumn", "Winter"][season] + " " + year;
-                            document.getElementById("start-season").appendChild(option);
-                        }
+                for (let year = new Date().getFullYear(); year >= 1970; year--) {
+                    let option;
+                    for (let season = 0; season < 4; season++) {
+                        option = document.createElement("option");
+                        option.value = season;
+                        option.textContent = ["Spring", "Summer", "Autumn", "Winter"][season] + " " + year;
+                        document.getElementById("start-season").appendChild(option);
                     }
-                });
+                }
             </script>
-            <select id="start-decade" class="form-control" name="start_date" style="display: none">
+            <select id="start-decade" class="form-control" name="start_date" style="display: none"
+                    onchange="document.getElementById('start-date-free').value = this.options[this.selectedIndex].text;">
                 <option value="">Select Decade</option>
                 <script>
                     const currentYear = new Date().getFullYear();
@@ -125,14 +124,10 @@
                     }
                 </script>
             </select>
-
-
             <label for="start-date-free" style="display: none">Start Date Free</label>
             <input id="start-date-free" type="text" name="start_date_free" class="form-control" style="display: none">
             <label for="end-date-free" style="display: none">End Date Free</label>
             <input id="end-date-free" name="end_date_free" type="text" class="form-control" style="display: none">
-
-
         </div>
         <div class="form-group">
             <label for="end-date">End Date:</label>
@@ -142,30 +137,29 @@
                 <option value="">Select Season</option>
             </select>
             <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    for (let year = new Date().getFullYear(); year >= 1970; year--) {
-                        let option;
-                        for (let season = 0; season < 4; season++) {
-                            option = document.createElement("option");
-                            option.value = season;
-                            option.textContent = ["Winter", "Autumn", "Summer", "Spring"][season] + " " + year;
-                            document.getElementById("end-season").appendChild(option);
-                        }
+                for (let year = new Date().getFullYear(); year >= 1970; year--) {
+                    let option;
+                    for (let season = 0; season < 4; season++) {
+                        option = document.createElement("option");
+                        option.value = season;
+                        option.textContent = ["Winter", "Autumn", "Summer", "Spring"][season] + " " + year;
+                        document.getElementById("end-season").appendChild(option);
                     }
-                });
+                }
             </script>
-            <select id="end-decade" name="end_date" style="display: none">
+            <select id="end-decade" name="end_date" style="display: none"
+                    onchange="document.getElementById('end-date-free').value = this.options[this.selectedIndex].text;">
                 <option value="">Select Decade</option>
-                <script>
-                    for (let year = currentYear - (currentYear % 10); year >= 1970; year -= 10) {
-                        const decadeStart = year;
-                        const option = document.createElement("option");
-                        option.value = year;
-                        option.textContent = decadeStart + "s";
-                        document.getElementById("end-decade").appendChild(option);
-                    }
-                </script>
             </select>
+            <script>
+                for (let year = currentYear - (currentYear % 10); year >= 1970; year -= 10) {
+                    const decadeStart = year;
+                    const option = document.createElement("option");
+                    option.value = year;
+                    option.textContent = decadeStart + "s";
+                    document.getElementById("end-decade").appendChild(option);
+                }
+            </script>
         </div>
         <div class="form-group">
             <label for="image">Image</label>
