@@ -39,7 +39,7 @@ class Post(db.Model):
     title = db.Column(db.String(255), nullable=False)
     body = db.Column(db.Text, nullable=False)
     tags = db.Column(db.String(200))
-    image_url = db.Column(db.String())
+    base64_image = db.Column(db.String())
     geolocation = db.Column(db.String(255))
     lat_lon = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
@@ -59,8 +59,8 @@ class Post(db.Model):
             return self.geolocation.split(';')
 
     def get_image(self):
-        if self.image_url:
-            return "data:image/png;base64," + self.image_url
+        if self.base64_image:
+            return "data:image/png;base64," + self.base64_image
 
     def is_liked(self):
         return self.likes.filter_by(user_id=current_user.id).first()
