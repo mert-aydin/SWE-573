@@ -1,7 +1,11 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="dashboard-container">
     <div class="stories">
         {% for post in posts %}
         <div class="post-card" data-post-id="{{ post.id }}">
+            <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
+                <button class="delete-button" type="submit"><i class="fa fa-times-circle"></i></button>
+            </form>
             <div class="card-header">
                 <h3>{{ post.title }}</h3>
                 <div class="card-dates">

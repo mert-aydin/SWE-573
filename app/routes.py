@@ -1,7 +1,7 @@
 import base64
 import os
 import werkzeug.exceptions
-from flask import render_template, redirect, url_for, flash, request, jsonify
+from flask import render_template, redirect, url_for, flash, request, jsonify, abort
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -183,6 +183,19 @@ def like_post(post_id):
     db.session.commit()
 
     return jsonify(success=True, message="Post liked", likes=post.likes.count())
+
+
+@app.route('/post/<int:post_id>/delete', methods=['POST'])
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    if post.user_id != current_user.id:
+        return abort(403)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(url_for('dashboard'))
 
 
 @app.errorhandler(werkzeug.exceptions.Unauthorized)
