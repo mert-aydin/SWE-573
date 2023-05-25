@@ -215,14 +215,15 @@ def delete_post(post_id):
     return redirect(url_for('dashboard'))
 
 
-@app.route('/search/<keyword>')
-def search_posts(keyword):
+@app.route('/search/', methods=['GET'])
+def search_posts():
+    keyword = request.args.get('keyword')
     return render_template('dashboard.html', posts=Post.query.join(User).filter(or_(
         User.username.ilike(f"%{keyword}%"),
         Post.title.ilike(f"%{keyword}%"),
         Post.body.ilike(f"%{keyword}%"),
-        Post.geolocation.ilike(f"%{keyword}%"))
-    ).all())
+        Post.geolocation.ilike(f"%{keyword}%"),
+    )).all())
 
 
 @app.errorhandler(werkzeug.exceptions.Unauthorized)

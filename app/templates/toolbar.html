@@ -9,6 +9,13 @@
         <h1 style="color: #2196f3"><i>Storyverse</i></h1>
     </a>
 
+    <div class="search-container">
+        <form action="{{ url_for('search_posts', keyword=a) }}" method="get">
+            <input type="text" name="keyword" placeholder="Search..."/>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
     <div class="logout-container">
         <form action="{{ url_for('logout') }}" method="post">
             <button type="submit">Logout</button>
