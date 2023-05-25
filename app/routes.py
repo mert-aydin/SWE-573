@@ -110,7 +110,8 @@ def create_post():
         if form.end_date.data == "":
             form.end_date.data = None
 
-        post = Post(title=form.title.data, body=form.body.data, tags=form.tags.data, start_date=form.start_date.data,
+        post = Post(title=form.title.data, body=form.body.data, tags=form.tags.data.replace(" ", ";"),
+                    start_date=form.start_date.data,
                     end_date=form.end_date.data, user_id=current_user.id, geolocation=form.geolocation.data,
                     lat_lon=form.lat_lon.data,
                     base64_image=base64_encoded_image)
