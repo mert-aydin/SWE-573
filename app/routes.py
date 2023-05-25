@@ -3,6 +3,8 @@ import os
 import werkzeug.exceptions
 from flask import render_template, redirect, url_for, flash, request, jsonify, abort
 from flask_login import login_user, logout_user, login_required, current_user
+from sqlalchemy import or_
+from sqlalchemy.orm import joinedload
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from app import app, login_manager
@@ -200,6 +202,7 @@ def like_post(post_id):
 
 
 @app.route('/post/<int:post_id>/delete', methods=['POST'])
+@login_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
 
@@ -210,6 +213,16 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(url_for('dashboard'))
+
+
+@app.route('/search/<keyword>')
+def search_posts(keyword):
+    return render_template('dashboard.html', posts=Post.query.join(User).filter(or_(
+        User.username.ilike(f"%{keyword}%"),
+        Post.title.ilike(f"%{keyword}%"),
+        Post.body.ilike(f"%{keyword}%"),
+        Post.geolocation.ilike(f"%{keyword}%"))
+    ).all())
 
 
 @app.errorhandler(werkzeug.exceptions.Unauthorized)
