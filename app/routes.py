@@ -222,6 +222,7 @@ def search_posts():
         User.username.ilike(f"%{keyword}%"),
         Post.title.ilike(f"%{keyword}%"),
         Post.body.ilike(f"%{keyword}%"),
+        Post.tags.ilike(f"%{keyword}%"),
         Post.geolocation.ilike(f"%{keyword}%"),
     )).all())
 
