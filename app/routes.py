@@ -92,7 +92,7 @@ def dashboard():
 def create_post():
     form = CreatePostForm()
     if form.validate_on_submit():
-        image = request.files[form.image_url.name]
+        image = request.files[form.base64_image.name]
         base64_encoded_image = None
 
         if image:
@@ -113,7 +113,7 @@ def create_post():
         post = Post(title=form.title.data, body=form.body.data, tags=form.tags.data, start_date=form.start_date.data,
                     end_date=form.end_date.data, user_id=current_user.id, geolocation=form.geolocation.data,
                     lat_lon=form.lat_lon.data,
-                    image_url=base64_encoded_image)
+                    base64_image=base64_encoded_image)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
