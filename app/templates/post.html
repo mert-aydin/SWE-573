@@ -25,11 +25,10 @@
                     endfor %}</p>
                 {% endif %}
             </div>
-            </p>
-            {% if post.get_image() %}
-            <img src="{{ post.get_image() }}" height="500em">
-            {% endif %}
             <p>{{ post.body }}</p>
+            {% if post.get_image() %}
+            <img src="{{ post.get_image() }}" width="100%" alt="">
+            {% endif %}
             <div>
                 {% with coordinates = post.lat_lon, id = post.id %}
                 {% include "location_presenter.html" %}
