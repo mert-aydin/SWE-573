@@ -65,6 +65,9 @@ class Post(db.Model):
     def is_liked(self):
         return self.likes.filter_by(user_id=current_user.id).first()
 
+    def is_posted_by_current_user(self):
+        return self.user_id == current_user.id
+
 
 class Like(db.Model):
     id = db.Column(db.Integer, primary_key=True)

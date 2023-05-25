@@ -3,9 +3,11 @@
     <div class="stories">
         {% for post in posts %}
         <div class="post-card" data-post-id="{{ post.id }}">
+            {% if post.is_posted_by_current_user() %}
             <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
                 <button class="delete-button" type="submit"><i class="fa fa-times-circle"></i></button>
             </form>
+            {% endif %}
             <div class="card-header">
                 <h3>{{ post.title }}</h3>
                 <div class="card-dates">
