@@ -11,7 +11,8 @@ services:
       - postgres_data:/var/lib/postgresql/data/
 
   web:
-    build: .
+    # build: .
+    image: swe-573-web
     command: python app.py
     volumes:
       - .:/app
